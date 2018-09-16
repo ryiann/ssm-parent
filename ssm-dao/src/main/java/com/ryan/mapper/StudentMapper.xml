@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ryan.dao.StudentMapper">
+    <resultMap id="BaseResultMap" type="com.ryan.vo.StudentVO">
+        <result column="STU_ID" jdbcType="INTEGER" property="stuId" />
+        <result column="STU_NUMBER" jdbcType="INTEGER" property="stuNumber" />
+        <result column="STU_NAME" jdbcType="VARCHAR" property="stuName" />
+        <result column="STU_AGE" jdbcType="INTEGER" property="stuAge" />
+        <result column="STU_GENDER" jdbcType="VARCHAR" property="stuGender" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    STU_ID, STU_NUMBER, STU_NAME, STU_AGE, STU_GENDER
+  	</sql>
+    <select id="findStudentListByPage"  resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM T_STUDENT_INFO
+        <where>
+            <if test="stuId != null">
+                STU_ID = #{stuId}
+            </if>
+            <if test="stuNumber != null">
+                AND STU_NUMBER like #{stuNumber}
+            </if>
+            <if test="stuName != null">
+                AND STU_NAME like #{stuName}
+            </if>
+            <if test="stuAge != null">
+                AND STU_AGE like #{stuAge}
+            </if>
+            <if test="stuGender != null">
+                AND STU_GENDER like #{stuGender}
+            </if>
+        </where>
+    </select>
+    <select id="findStudentInfoByStuId"  resultMap="BaseResultMap" parameterType="com.ryan.vo.StudentVO">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM T_STUDENT_INFO
+        WHERE STU_ID = #{stuId,jdbcType=INTEGER}
+    </select>
+    <insert id="insertStudent" parameterType="com.ryan.vo.StudentVO">
+        INSERT INTO T_STUDENT_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuNumber != null">
+                STU_NUMBER,
+            </if>
+            <if test="stuName != null">
+                STU_NAME,
+            </if>
+            <if test="stuAge != null">
+                STU_AGE,
+            </if>
+            <if test="stuGender != null">
+                STU_GENDER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuNumber != null">
+                #{stuNumber,jdbcType=INTEGER},
+            </if>
+            <if test="stuName != null">
+                #{stuName,jdbcType=VARCHAR},
+            </if>
+            <if test="stuAge != null">
+                #{stuAge,jdbcType=INTEGER},
+            </if>
+            <if test="stuGender != null">
+                #{stuGender,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateStudentByStuId" parameterType="com.ryan.vo.StudentVO">
+        UPDATE T_STUDENT_INFO
+        <set>
+            <if test="stuNumber != null">
+                STU_NUMBER = #{stuNumber,jdbcType=INTEGER},
+            </if>
+            <if test="stuName != null">
+                STU_NAME = #{stuName,jdbcType=VARCHAR},
+            </if>
+            <if test="stuAge != null">
+                STU_AGE = #{stuAge,jdbcType=INTEGER},
+            </if>
+            <if test="stuGender != null">
+                STU_GENDER = #{stuGender,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE STU_ID = #{stuId,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteStudentByStuId" parameterType="java.lang.Integer">
+    DELETE from T_STUDENT_INFO
+    WHERE STU_ID = #{stuId,jdbcType=INTEGER}
+  </delete>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <!-- 加载配置application.properties-->
+    <bean id="propertyConfigure"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="classpath:applicationContext.properties"/>
+    </bean>
+
+    <!-- 引入DB数据源 -->
+    <import resource="classpath:/dataSource.xml"/>
+
+    <!-- 引入业务集成域 -->
+    <import resource="classpath:/applicationContext-service.xml"/>
+
+    <!-- 引入spring动作跳转 -->
+    <import resource="classpath:/applicationContext-web.xml"/>
+
+    <!-- 引入系统级切面 -->
+    <import resource="classpath:/applicationContext-aop.xml"/>
+
+    <!-- 引入系统线程池 -->
+    <import resource="classpath:/applicationContext-thread.xml"/>
+</beans>
